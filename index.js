@@ -54,9 +54,17 @@ app.post('/watchme', async (req, res) => {
     const resFetch = await git.fetch(repoConfig.origin_remote)
     console.log('fetch: ', resFetch)
 
-    // checkout branch
-    const resCheckout = await git.checkout(pushedBranch)
-    console.log('checkout: ', resCheckout)
+    // branch (check local branch exist)
+    const resBranch = await git.branchLocal()
+    if (!resBranch.all.includes(pushedBranch)) {
+      // create new branch
+      const resCheckout = await git.checkoutBranch(pushedBranch, `${repoConfig.origin_remote}/${pushedBranch}`)
+      console.log('checkout: ', resCheckout)
+    } else {
+      // checkout branch
+      const resCheckout = await git.checkout(pushedBranch)
+      console.log('checkout: ', resCheckout)
+    }
 
     // pull
     const resPull = await git.pull(repoConfig.origin_remote, pushedBranch)
