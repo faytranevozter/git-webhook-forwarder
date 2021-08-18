@@ -4,7 +4,7 @@
   "description": "Forward git into another git hosting",
   "main": "index.js",
   "scripts": {
-    "run": "node index.js",
+    "start": "node index.js",
     "dev": "nodemon index.js"
   },
   "repository": {
