@@ -36,6 +36,13 @@ app.post('/watchme', async (req, res) => {
     })
   }
 
+  // check if delete branch
+  if (payload.deleted) {
+    return res.json({
+      message: `nothing forwarded on delete branch ${pushedBranch}`
+    })
+  }
+
   try {
     const simpleGit = require('simple-git')
     const git = simpleGit(repoConfig.origin_path, {})
