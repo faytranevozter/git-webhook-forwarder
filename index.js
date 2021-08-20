@@ -1,11 +1,16 @@
 require('dotenv').config()
 require('crypto')
+const simpleGit = require('simple-git/promise')
 const express = require('express')
 const app = express()
 const port = process.env.PORT || 3000
 
 // helper
 const helper = require('./helper')
+
+// loggin git
+const debug = require('debug')
+debug.enable('simple-git,simple-git:*')
 
 // middleware
 const middle = require('./middleware')
@@ -44,7 +49,6 @@ app.post('/watchme', async (req, res) => {
   }
 
   try {
-    const simpleGit = require('simple-git')
     const git = simpleGit(repoConfig.origin_path, {})
 
     // check remote git
@@ -58,7 +62,7 @@ app.post('/watchme', async (req, res) => {
     }
 
     // fetch (in case dont have any branch)
-    const resFetch = await git.fetch(repoConfig.origin_remote)
+    const resFetch = await git.fetch(repoConfig.origin_remote, pushedBranch)
     console.log('fetch: ', resFetch)
 
     // branch (check local branch exist)
