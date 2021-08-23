@@ -3,8 +3,8 @@ const crypto = require('crypto')
 
 const secret = process.env.SECRET_TOKEN
 
-const onlyPushEvent = (req, res, next) => {
-  if (req.get('X-Github-Event') === 'push') {
+const onlyPushPingEvent = (req, res, next) => {
+  if (['ping', 'push'].includes(req.get('X-Github-Event'))) {
     return next()
   }
 
@@ -33,6 +33,6 @@ const verifyPostData = (req, res, next) => {
 }
 
 module.exports = {
-  onlyPushEvent,
+  onlyPushPingEvent,
   verifyPostData
 }

@@ -21,7 +21,7 @@ app.get('/', (req, res) => {
   res.send('Hello World!')
 })
 
-app.use(middle.onlyPushEvent)
+app.use(middle.onlyPushPingEvent)
 app.use(middle.verifyPostData)
 
 app.post('/watchme', async (req, res) => {
@@ -31,6 +31,12 @@ app.post('/watchme', async (req, res) => {
   if (repoConfig === false) {
     return res.json({
       message: 'nothing forwarded'
+    })
+  }
+
+  if (req.get('X-Github-Event') === 'ping') {
+    return res.json({
+      message: 'pong'
     })
   }
 
