@@ -26,7 +26,7 @@ app.use(middle.verifyPostData)
 
 app.post('/watchme', async (req, res) => {
   const payload = req.body
-  const repoConfig = helper.findRepoByGithubURL(payload.repository.url)
+  const repoConfig = helper.findRepoByGithubURL(payload.repository.html_url)
 
   if (repoConfig === false) {
     return res.json({
