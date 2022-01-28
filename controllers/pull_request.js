@@ -9,15 +9,17 @@ module.exports = async (req, res) => {
   })
 
   if (['opened', 'closed', 'review_requested'].includes(payload.action)) {
-    let actionPR = ''
+    let actionPR = payload.action
     if (payload.action === 'opened') {
       actionPR = '⏳ NEW PR'
     } else if (payload.action === 'review_requested') {
       actionPR = '🧑🏽‍🔧 ADD REVIEWER PR'
-    } else if (payload.action === 'closed' && payload.pull_request.merged) {
-      actionPR = '❌ CLOSE PR'
-    } else if (payload.action === 'closed' && payload.pull_request.merged) {
-      actionPR = '✅ MERGED PR'
+    } else if (payload.action === 'closed') {
+      if (payload.pull_request.merged) {
+        actionPR = '✅ MERGED PR'
+      } else {
+        actionPR = '❌ CLOSE PR'
+      }
     }
 
     // commits
