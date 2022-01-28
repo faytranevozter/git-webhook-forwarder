@@ -1,3 +1,4 @@
+const { default: axios } = require('axios')
 const repositories = require('./config')
 
 const findRepoByGithubURL = (url) => {
@@ -24,8 +25,21 @@ const checkRemoteExist = (shouldHave = [], availableRemotes = []) => {
   return shouldHave.length === totalFound
 }
 
+const sendTelegram = (to, msg) => {
+  const token = process.env.BOT_TELEGRAM_TOKEN || ''
+  if (token !== '') {
+    axios.post(`https://api.telegram.org/bot${token}/sendMessage`, {
+      chat_id: to,
+      text: msg,
+      parse_mode: 'html',
+      disable_web_page_preview: true
+    })
+  }
+}
+
 module.exports = {
   repositories,
   findRepoByGithubURL,
-  checkRemoteExist
+  checkRemoteExist,
+  sendTelegram
 }
