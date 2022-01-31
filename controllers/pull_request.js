@@ -4,7 +4,7 @@ const { sendTelegram } = require('../helper')
 module.exports = async (req, res) => {
   const payload = req.body
   const octokit = new Octokit({ auth: process.env.GH_PERSONAL_ACCESS_TOKEN })
-  const user = await (new Octokit()).request('GET /users/{username}', {
+  const user = await octokit.request('GET /users/{username}', {
     username: payload.sender.login
   })
 
